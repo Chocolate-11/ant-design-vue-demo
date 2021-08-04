@@ -10,14 +10,15 @@
         <div>
             <a-dropdown :trigger="['click']">
                 <a-badge :count="2">
-                    <a-avatar icon="user"/>
+                    <a-avatar icon="user" />
                 </a-badge>
                 <a-menu slot="overlay">
                     <a-menu-item>
-                        编辑
+                        编辑信息
                     </a-menu-item>
+                    <a-menu-divider />
                     <a-menu-item>
-                        退出
+                        退出登录
                     </a-menu-item>
                 </a-menu>
             </a-dropdown>
