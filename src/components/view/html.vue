@@ -328,6 +328,7 @@ export default({
             }else {
                 this.putParam.done = 'true';
                 this.putData(record);
+                console.log(123);
             }
         },
         // 任务未完成
