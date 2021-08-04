@@ -34,7 +34,7 @@ export default {
     data() {
         return {
             openKeys: ['sub1'],
-            defaultSelectedKeys: ['/sub1-1']
+            defaultSelectedKeys: ['/html']
         }
     },
     props: {

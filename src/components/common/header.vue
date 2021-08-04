@@ -6,8 +6,22 @@
             :type="collapsed ? 'menu-unfold' : 'menu-fold'"
             @click="collapse()"
             />
-            <h2>任务管理系统</h2>
-        <div></div>
+        <h2>任务管理系统</h2>
+        <div>
+            <a-dropdown :trigger="['click']">
+                <a-badge :count="2">
+                    <a-avatar icon="user"/>
+                </a-badge>
+                <a-menu slot="overlay">
+                    <a-menu-item>
+                        编辑
+                    </a-menu-item>
+                    <a-menu-item>
+                        退出
+                    </a-menu-item>
+                </a-menu>
+            </a-dropdown>
+        </div>
     </a-layout-header>
 </template>
 

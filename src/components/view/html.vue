@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- .native 表示对一个组件绑定系统原生事件 .prevent 表示提交以后不刷新页面 -->
         <a-form-model ref="inlineForm" layout="inline" :model="getParam" @submit="handleSubmit" @submit.native.prevent>
             <a-form-model-item>
                 <a-input v-model="getParam.info" placeholder="请输入任务名" style="width: 250px;"></a-input>
