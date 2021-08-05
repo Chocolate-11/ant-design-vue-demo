@@ -59,6 +59,13 @@
             <span slot='action' slot-scope="text, record">
                 <a-button type="link" style="color: #67C23A;" @click="putTrue(record)">已完成</a-button>
                 <a-button type="link" style="color: #E6A23C;" @click="putFalse(record)">未完成</a-button>
+                <a-prpconfirm
+                    title="确定改变任务完成状态吗？"
+                    ok-text="确定"
+                    cancel-text="返回"
+                    @confirm="changeDone">
+                    <a-button>改变状态</a-button>
+                </a-prpconfirm>
                 <!-- <a-button type="link" style="color: #F56C6C;" @click="deleteId(record)">删除</a-button> -->
             </span>
         </a-table>
@@ -122,7 +129,7 @@ export default({
                 title: '完成状态',
                 dataIndex: 'done',
                 key: 'done',
-                scopedSlots: { customRender: 'done' },
+                scopedSlots: { customRender: 'done', },
                 align: 'center',
             }, {
                 title: '素材提取码',
@@ -149,7 +156,7 @@ export default({
                 pageSize: 5,
                 showSizeChanger: true,
                 pageSizeOptions: ['5', '10', '20', '30'],
-                showTotal: total => `共有${total}条数据`
+                // showTotal: total => `共有${total}条数据`
             },  // 表格分页配置
             loading: false,  // 表格是否加载中
             visible: false,  // 弹出框是否显示
@@ -207,6 +214,8 @@ export default({
                 chapter: '',
                 done: '',
             },  // put请求参数
+            searchColumn: '',
+            searchText: '',
         }
     },
     mounted() {
@@ -229,6 +238,7 @@ export default({
             }).catch(err => {
                 // console.log(err);
                 this.$message.error('查询任务失败');
+                this.loading = false;
             })
         },
         // 添加任务
@@ -271,11 +281,11 @@ export default({
                 this.getData();
             }).catch(err => {
                 // console.log(err);
-                this.$message.success('删除任务失败');
+                this.$message.error('删除任务失败');
             })
         },
         // 表格页码发生变化的函数
-        handleTableChange(pagination) {
+        handleTableChange(pagination, filters, sorter) {
             console.log(pagination);
             this.pagination.current = pagination.current;
             this.pagination.pageSize = pagination.pageSize
@@ -321,7 +331,10 @@ export default({
                     window.open(record, '_blank');
                 }
             })
-        }, 
+        },
+        changeDone() {
+            console.log();
+        },
         // 任务已完成
         putTrue(record) {
             if(record.done === 'true') {
