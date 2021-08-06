@@ -40,6 +40,7 @@
             :row-key='record => record.id'
             @change="handleTableChange"
             style="margin-top: 20px;"
+            :scroll="{ y: 325 }"
             >
             <span slot='chapter' slot-scope="record">
                 第{{record}}章
@@ -57,15 +58,13 @@
                 <span v-else style="color: red;">未完成</span>
             </span>
             <span slot='action' slot-scope="text, record">
-                <a-button type="link" style="color: #67C23A;" @click="putTrue(record)">已完成</a-button>
-                <a-button type="link" style="color: #E6A23C;" @click="putFalse(record)">未完成</a-button>
-                <a-prpconfirm
+                <a-popconfirm
                     title="确定改变任务完成状态吗？"
                     ok-text="确定"
                     cancel-text="返回"
-                    @confirm="changeDone">
-                    <a-button>改变状态</a-button>
-                </a-prpconfirm>
+                    @confirm="changeDone(record)">
+                    <a-button type="link" style="color: #67C23A;">改变状态</a-button>
+                </a-popconfirm>
                 <!-- <a-button type="link" style="color: #F56C6C;" @click="deleteId(record)">删除</a-button> -->
             </span>
         </a-table>
@@ -118,6 +117,7 @@ export default({
                 title: '任务',
                 dataIndex: 'info',
                 key: 'info',
+                width: 350,
                 align: 'center',
             }, {
                 title: '章节',
@@ -156,7 +156,7 @@ export default({
                 pageSize: 5,
                 showSizeChanger: true,
                 pageSizeOptions: ['5', '10', '20', '30'],
-                // showTotal: total => `共有${total}条数据`
+                showTotal: total => `共有${total}条数据`
             },  // 表格分页配置
             loading: false,  // 表格是否加载中
             visible: false,  // 弹出框是否显示
@@ -286,7 +286,6 @@ export default({
         },
         // 表格页码发生变化的函数
         handleTableChange(pagination, filters, sorter) {
-            console.log(pagination);
             this.pagination.current = pagination.current;
             this.pagination.pageSize = pagination.pageSize
         },
@@ -318,6 +317,20 @@ export default({
                 }
             })
         },
+        // 改变任务状态
+        changeDone(record) {
+            console.log(record);
+            if(record.done === 'true') {
+                this.putParam.done = 'false';
+            }else {
+                this.putParam.done = 'true';
+            }
+            this.putData(record);
+        },
+        // 删除任务
+        deleteId(record) {
+            this.deleteData(record.id)
+        },
         // 取消添加任务
         returnTable() {
             this.visible = false;
@@ -331,31 +344,6 @@ export default({
                     window.open(record, '_blank');
                 }
             })
-        },
-        changeDone() {
-            console.log();
-        },
-        // 任务已完成
-        putTrue(record) {
-            if(record.done === 'true') {
-                this.$message.warning('任务已经是已完成状态')
-            }else {
-                this.putParam.done = 'true';
-                this.putData(record);
-            }
-        },
-        // 任务未完成
-        putFalse(record) {
-            if(record.done === 'false') {
-                this.$message.warning('任务已经是未完成状态')
-            }else {
-                this.putParam.done = 'false';
-                this.putData(record);
-            }
-        },
-        // 删除任务
-        deleteId(record) {
-            this.deleteData(record.id)
         },
     }
 })
